@@ -34,9 +34,15 @@ const userSchema = mongoose.Schema({
 })
 
 //Encrypt password before we save it
-userSchema.pre("save", async function (next){
+userSchema.pre("save", async function (next){ //this is a document
     if (!this.isModified("password")) return next(); //pass in the name of the field, password
     this.password = await bcrypt.hash(this.password, saltRounds)
+    next();
+})
+
+userSchema.pre("findOneAndUpdate", async function (next){ //this is not a document, it's a query
+    if (!this._update.password) return next(); //pass in the name of the field, password
+    this._update.password = await bcrypt.hash(this._update.password, saltRounds)
     next();
 })
 

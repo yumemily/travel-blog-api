@@ -18,7 +18,7 @@ const categorySchema = mongoose.Schema({
 categorySchema.virtual("tours", {
     ref: "Tour", //the model to use
     localField: "_id", 
-    foreignField: "categories"
+    foreignField: "category"
 });
 
 const Category = mongoose.model('Category', categorySchema)
